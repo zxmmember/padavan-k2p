@@ -1,7 +1,10 @@
+IMAGE_AUTHOR	= TurBoTse
+IMAGE_TIME	= `TZ='Asia/Shanghai' date +%Y%m%d`
 KERNELZ		= $(IMAGEDIR)/zImage
 RAMDISK		= $(IMAGEDIR)/ramdisk
-IMAGE		= $(IMAGEDIR)/$(CONFIG_FIRMWARE_PRODUCT_ID)_$(FIRMWARE_KERNEL_VER).$(FIRMWARE_ROOTFS_VER)-$(FIRMWARE_BUILDS_VER).trx
+IMAGE		= $(IMAGEDIR)/$(IMAGE_AUTHOR)-$(CONFIG_FIRMWARE_PRODUCT_ID)-$(FIRMWARE_KERNEL_VER)-$(CONFIG_TOOLCHAIN)-$(IMAGE_TIME).trx
 BOARD_DIR	= $(ROOTDIR)/configs/boards/$(CONFIG_FIRMWARE_PRODUCT_ID)
+SINGLESKU_DIR	= $(ROOTDIR)/vendors/Ralink
 
 ifeq ($(CONFIG_KERNEL_NO_COMPRESS),y)
 COMP		= none
@@ -57,7 +60,7 @@ romfs:
 	if [ -f $(BOARD_DIR)/l1profile.dat ]; then \
 		cp -f $(BOARD_DIR)/l1profile.dat $(ROMFSDIR)/etc_ro/Wireless; \
 	fi
-	for i in `ls $(BOARD_DIR)/SingleSKU*.dat 2>/dev/null` ; do \
+	for i in `ls $(SINGLESKU_DIR)/SingleSKU*.dat 2>/dev/null` ; do \
 		[ -f $$i ] && cp -f $$i $(ROMFSDIR)/etc_ro/Wireless; \
 	done
 
