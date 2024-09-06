@@ -59,6 +59,7 @@ This project is based on original rt-n56u with latest mtk 4.4.198 kernel, which 
 - JDCloud RE-SP-01B (from https://github.com/MeIsReallyBa/padavan-4.4, 没有机器测试，自行判断)
 - JCG-836PRO
 - JCG-AC860M
+- JCQ-Q10Pro (from https://github.com/vb1980/padavan-4.4, 没有机器测试，自行判断)
 - JCQ-Q11Pro (from https://github.com/qewwqewq22/padavan11, 没有机器测试，自行判断)
 - JCG-Q20
 - JCG-Y2

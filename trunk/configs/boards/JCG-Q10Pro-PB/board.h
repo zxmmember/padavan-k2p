@@ -1,8 +1,8 @@
-/* JCG-Q20-PB */
+/* JCG-Q10Pro-PB */
 
-#define BOARD_PID		"JCG-Q20-PB"
-#define BOARD_NAME		"JCG-Q20-PB"
-#define BOARD_DESC		"JCG-Q20 Wireless Router"
+#define BOARD_PID		"JCG-Q10Pro-PB"
+#define BOARD_NAME		"JCG-Q10Pro-PB"
+#define BOARD_DESC		"JCG-Q10Pro Wireless Router"
 #define BOARD_VENDOR_NAME	"JCG"
 #define BOARD_VENDOR_URL	"http://www.jcgcn.com/"
 #define BOARD_MODEL_URL		"http://www.jcgcn.com/"

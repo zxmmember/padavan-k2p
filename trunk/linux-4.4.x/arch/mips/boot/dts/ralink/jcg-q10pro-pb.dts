@@ -7,7 +7,7 @@
 
 / {
 	compatible = "mediatek,mt7621-soc";
-	model = "JCG Q20-PB";
+	model = "JCG Q10Pro-PB";
 
 	chosen {
 		bootargs = "console=ttyS0,115200";
