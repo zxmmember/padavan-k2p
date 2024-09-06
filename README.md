@@ -52,6 +52,7 @@ This project is based on original rt-n56u with latest mtk 4.4.198 kernel, which 
 - DIR-882
 - EA7500 (from https://github.com/MNM28/padavan-4.4, 没有机器测试，自行判断)
 - G-AX1800 (from https://github.com/ddyjyj/padavan-4.4, 富春江G-AX1800, 自测可用)
+- G-AX1800-B (from https://github.com/vb1980/padavan-4.4, 富春江G-AX1800黑色版本，自测可用, 网口配置和白色版不一样，4根天线都是ipex可拆，ttl排针焊接好了，做工比白色版好些)
 - GHL (from https://github.com/fangenhui520/padavan-4.4, 没有机器测试，自行判断)
 - HAR-20S2U1 (from https://github.com/vb1980/padavan-4.4, 没有机器测试，自行判断)
 - JDCloud RE-CP-02 (无线宝鲁班, from https://github.com/240038901/padavan-4.4, 没有机器测试，自行判断)
