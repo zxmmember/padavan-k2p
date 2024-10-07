@@ -32,10 +32,10 @@
 #include "print_pager.h"
 #include "compressor.h"
 
-#define MKSQUASHFS_SYNTAX "SYNTAX:%s source1 source2 ...  FILESYSTEM " \
+#define MKSQUASHFS_SYNTAX "SYNTAX: %s source1 source2 ...  FILESYSTEM " \
 	"[OPTIONS] [-e list of exclude dirs/files]\n\n"
 
-#define SQFSTAR_SYNTAX "SYNTAX:%s [OPTIONS] FILESYSTEM [list of exclude dirs/files]\n\n"
+#define SQFSTAR_SYNTAX "SYNTAX: %s [OPTIONS] FILESYSTEM [list of exclude dirs/files]\n\n"
 
 static char *mksquashfs_options[]={
 	"", "", "-b", "-comp", "-noI", "-noId", "-noD", "-noF", "-noX",
@@ -49,17 +49,17 @@ static char *mksquashfs_options[]={
 	"-pf", "-sort", "-ef", "-wildcards", "-regex", "-max-depth",
 	"-one-file-system", "-one-file-system-x", "", "", "", "-no-xattrs",
 	"-xattrs", "-xattrs-exclude", "-xattrs-include", "-xattrs-add", "",
-	"", "", "-version", "-exit-on-error", "-quiet", "-info", "-no-progress",
-	"-progress", "-percentage", "-throttle", "-limit", "-processors",
-	"-mem", "-mem-percent", "-mem-default", "", "", "", "-noappend",
-	"-root-becomes", "-no-recovery", "-recovery-path", "-recover", "", "",
-	"", "-action", "-log-action", "-true-action", "-false-action",
-	"-action-file", "-log-action-file", "-true-action-file",
-	"-false-action-file", "", "", "", "-default-mode", "-default-uid",
-	"-default-gid", "-ignore-zeros", "", "", "", "-nopad", "-offset", "-o",
-	"", "", "", "-help", "-help-option", "-help-section", "-help-comp",
-	"-help-all", "-Xhelp", "-h", "-ho", "-hs", "-ha", "", "", "",
-	"-fstime", "-always-use-fragments", "-root-owned",
+	"", "", "-version", "-exit-on-error", "-quiet", "-info", "-info-file",
+	"-no-progress", "-progress", "-percentage", "-throttle", "-limit",
+	"-processors", "-mem", "-mem-percent", "-mem-default", "", "", "",
+	"-noappend", "-root-becomes", "-no-recovery", "-recovery-path",
+	"-recover", "", "", "", "-action", "-log-action", "-true-action",
+	"-false-action", "-action-file", "-log-action-file",
+	"-true-action-file", "-false-action-file", "", "", "", "-default-mode",
+	"-default-uid", "-default-gid", "-ignore-zeros", "", "", "", "-nopad",
+	"-offset", "-o", "", "", "", "-help", "-help-option", "-help-section",
+	"-help-comp", "-help-all", "-Xhelp", "-h", "-ho", "-hs", "-ha", "", "",
+	"", "-fstime", "-always-use-fragments", "-root-owned",
 	"-noInodeCompression", "-noIdTableCompression", "-noDataCompression",
 	"-noFragmentCompression", "-noXattrCompression", "-pseudo-dir", NULL,
 };
@@ -74,10 +74,10 @@ static char *sqfstar_options[]={
 	"-no-hardlinks", "", "", "", "-p", "-pd", "-pd", "-pf", "-ef", "-regex",
 	"-ignore-zeros", "", "", "", "-no-xattrs", "-xattrs", "-xattrs-exclude",
 	"-xattrs-include", "-xattrs-add", "", "","", "-version", "-force",
-	"-exit-on-error", "-quiet", "-info", "-no-progress", "-progress",
-	"-percentage", "-throttle", "-limit", "-processors", "-mem",
-	"-mem-percent", "-mem-default", "", "", "", "-nopad", "-offset", "-o",
-	"", "", "", "-help", "help-option", "-help-section", "-help-comp",
+	"-exit-on-error", "-quiet", "-info", "-info-file", "-no-progress",
+	"-progress", "-percentage", "-throttle", "-limit", "-processors",
+	"-mem", "-mem-percent", "-mem-default", "", "", "", "-nopad", "-offset",
+	"-o", "", "", "", "-help", "help-option", "-help-section", "-help-comp",
 	"-help-all", "-Xhelp", "-h", "-ho", "-hs", "-ha", "", "", "",
 	"-fstime", "-root-owned", "-noInodeCompression",
 	"-noIdTableCompression", "-noDataCompression",
@@ -91,9 +91,9 @@ static char *mksquashfs_args[]={
 	"", "", "", "<d mode uid gid>", "<D time mode uid gid>",
 	"<pseudo-file>", "<sort-file>", "<exclude-file>", "", "", "<levels>",
 	"", "", "", "", "", "", "", "<regex>", "<regex>", "<name=val>", "", "",
-	"", "", "", "", "", "", "", "", "<percentage>", "<percentage>",
-	"<number>", "<size>", "<percent>", "", "", "", "", "", "<name>", "",
-	"<name>", "<name>", "", "", "", "<action@expression>",
+	"", "", "", "", "", "<file>", "", "", "", "<percentage>",
+	"<percentage>", "<number>", "<size>", "<percent>", "", "", "", "", "",
+	"<name>", "", "<name>", "<name>", "", "", "", "<action@expression>",
 	"<action@expression>", "<action@expression>", "<action@expression>",
 	"<file>", "<file>", "<file>", "<file>", "", "", "", "<mode>", "<value>",
 	"<value>", "", "", "", "", "", "<offset>", "<offset>", "", "", "", "",
@@ -108,10 +108,11 @@ static char *sqfstar_args[]={
 	"", "", "", "", "", "", "", "<pseudo-definition>", "<d mode uid gid>",
 	"<D time mode u g>", "<pseudo-file>", "<exclude-file>", "", "", "", "",
 	"", "", "", "<regex>", "<regex>", "<name=val>", "", "","", "", "", "",
-	"", "", "", "", "", "<percentage>", "<percentage>", "<number>",
-	"<size>", "<percent>", "", "", "", "", "", "<offset>", "<offset>", "",
-	"", "", "", "<regex>", "<section>", "<comp>", "", "", "", "<regex>",
-	"<section>", "" "", "", "", "<time>", "", "", "", "", "", "", ""
+	"", "", "<file>", "", "", "", "<percentage>", "<percentage>",
+	"<number>", "<size>", "<percent>", "", "", "", "", "", "<offset>",
+	"<offset>", "", "", "", "", "<regex>", "<section>", "<comp>", "", "",
+	"", "<regex>", "<section>", "" "", "", "", "<time>", "", "", "", "", "",
+	"", ""
 };
 
 static char *mksquashfs_sections[]={
@@ -255,7 +256,11 @@ static char *mksquashfs_text[]={
 	"-version\t\tprint version, licence and copyright message\n",
 	"-exit-on-error\t\ttreat normally ignored errors as fatal\n",
 	"-quiet\t\t\tno verbose output\n",
-	"-info\t\t\tprint files written to filesystem\n",
+	"-info\t\t\tprint files written to filesystem to stdout.  This "
+		"automatically disables the progress bar.  See -info-file to "
+		"output to file without disabling the progress bar\n",
+	"-info-file <file>\tprint files written to filesystem to file <file>.  "
+		"This does not disable the progress bar\n",
 	"-no-progress\t\tdo not display the progress bar\n",
 	"-progress\t\tdisplay progress bar when using the -info option\n",
 	"-percentage\t\tdisplay a percentage rather than the full progress bar."
@@ -363,6 +368,7 @@ static char *mksquashfs_text[]={
 	"\"filename i mode uid gid [s|f]\"\t\tcreate a socket (s) or FIFO "
 		"(f)\n",
 	"\"filename x name=val\"\t\t\tcreate an extended attribute\n",
+	"\"filename h linkname\"\t\t\tcreate a hard-link to linkname, follows symlinks\n",
 	"\"filename l linkname\"\t\t\tcreate a hard-link to linkname\n",
 	"\"filename L pseudo_filename\"\t\tsame, but link to pseudo file\n",
 	"\"filename D time mode uid gid\"\t\tcreate a directory with timestamp "
@@ -524,7 +530,11 @@ static char *sqfstar_text[]={
 	"-force\t\t\tforce Sqfstar to write to block device or file\n",
 	"-exit-on-error\t\ttreat normally ignored errors as fatal\n",
 	"-quiet\t\t\tno verbose output\n",
-	"-info\t\t\tprint files written to filesystem\n",
+	"-info\t\t\tprint files written to filesystem to stdout.  This "
+		"automatically disables the progress bar.  See -info-file to "
+		"output to file without disabling the progress bar\n",
+	"-info-file <file>\tprint files written to filesystem to file <file>.  "
+		"This does not disable the progress bar\n",
 	"-no-progress\t\tdo not display the progress bar\n",
 	"-progress\t\tdisplay progress bar when using the -info option\n",
 	"-percentage\t\tdisplay a percentage rather than the full progress "
@@ -584,6 +594,7 @@ static char *sqfstar_text[]={
 	"\"filename i mode uid gid [s|f]\"\t\tcreate a socket (s) or FIFO "
 		"(f)\n",
 	"\"filename x name=val\"\t\t\tcreate an extended attribute\n",
+	"\"filename h linkname\"\t\t\tcreate a hard-link to linkname, follows symlinks\n",
 	"\"filename l linkname\"\t\t\tcreate a hard-link to linkname\n",
 	"\"filename L pseudo_filename\"\t\tsame, but link to pseudo file\n",
 	"\"filename D time mode uid gid\"\t\tcreate a directory with timestamp "
@@ -782,7 +793,7 @@ static void handle_invalid_option(char *prog_name, char *opt_name, char **sectio
 }
 
 
-static void print_help(int error, char *prog_name, char *syntax, char **sections, char **options_text)
+static void print_help(char *prog_name, int error, char *syntax, char **sections, char **options_text)
 {
 	FILE *stream = error ? stderr : stdout;
 	int cols = get_column_width();
@@ -844,12 +855,12 @@ void sqfstar_section(char *opt_name, char *sec_name)
 
 void mksquashfs_help(int error)
 {
-	print_help(error, "mksquashfs", MKSQUASHFS_SYNTAX, mksquashfs_sections, mksquashfs_text);
+	print_help("mksquashfs", error, MKSQUASHFS_SYNTAX, mksquashfs_sections, mksquashfs_text);
 }
 
 void sqfstar_help(int error)
 {
-	print_help(error, "sqfstar", SQFSTAR_SYNTAX, sqfstar_sections, sqfstar_text);
+	print_help("sqfstar", error, SQFSTAR_SYNTAX, sqfstar_sections, sqfstar_text);
 }
 
 void mksquashfs_invalid_option(char *opt_name)
