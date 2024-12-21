@@ -121,7 +121,7 @@ on:
 env:
   FIRMWARE_AUTHOR: TurBoTse
   TOOLCHAIN_ROOT: toolchain/toolchain-mipsel
-  TOOLCHAIN_URL: https://github.com/TurBoTse/padavan/releases/download/toolchain
+  TOOLCHAIN_URL: https://github.com/zxmmember/padavan-k2p/releases/download/toolchain
 jobs:
   build:
     runs-on: ubuntu-latest
